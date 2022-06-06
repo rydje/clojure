@@ -34,7 +34,7 @@ Implement `day-name` and `month-name` to return a string pattern which, when exe
 
 ## 3. Capture the day, month, and year
 
-Implement `capture-day`, `capture-month`, `capture-year`, `capture-day-name`, `capture-month-name` to return a map of the respective components to the names: `"day"`, `"month"`, `"year"`, `"day-name"`, `"month-name"`
+Implement `capture-day`, `capture-month`, `capture-year`, `capture-day-name`, and `capture-month-name` to return a map of the respective components to the names: `"day"`, `"month"`, `"year"`, `"day-name"`, and `"month-name"`.
 
 ```clojure
 (capture-month-name "December")
