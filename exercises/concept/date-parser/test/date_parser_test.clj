@@ -182,7 +182,9 @@
     (testing "numeric day of the week (0-indexed)"
       (is (nil? (date-parser/day-names "0"))))
     (testing "numeric day of the week (1-indexed)"
-      (is (nil? (date-parser/day-names "1"))))))
+      (is (nil? (date-parser/day-names "1")))))
+  (testing "day names don't match with trailing or leading whitespace"
+    (is (nil? (date-parser/day-names " Sunday ")))))
 
 (deftest month-names-test
   (testing "month names match"
@@ -206,7 +208,9 @@
     (testing "numeric month of the year (0-indexed)"
       (is (nil? (date-parser/month-names "0"))))
     (testing "numeric month of the year (1-indexed)"
-      (is (nil? (date-parser/month-names "1"))))))
+      (is (nil? (date-parser/month-names "1")))))
+  (testing "month names don't match with trailing or leading whitespace"
+    (is (nil? (date-parser/day-names " January ")))))
 
 (deftest capture-test
   (testing "capture numeric month"
