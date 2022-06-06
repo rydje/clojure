@@ -49,3 +49,14 @@ Implement `capture-numeric-date`, `capture-month-name-date`, and `capture-day-mo
 (capture-numeric-date "01/01/1970")
 ;;=> {:day "01", :month "01", :year "1970"}
 ```
+
+## 5. Narrow the capture to match only on the date
+
+Implement `match-numeric-date`, `match-month-name-date`, and `match-day-month-name-date` to return a `java.util.regex.Pattern` that only matches the date, and which can also capture the components.
+
+```clojure
+(re-matches date-parser/match-day-month-name-date "Thursday, January 1, 1970 was the day")
+;; => nil
+(re-matches date-parser/match-day-month-name-date "Thursday, January 1, 1970")
+;; => ["Thursday, January 1, 1970" "Thursday" "January" "1" "1970"]
+```
