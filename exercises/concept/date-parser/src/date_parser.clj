@@ -4,6 +4,8 @@
 (def month "\\d{1,2}")
 (def year "\\d{4}")
 
+(re-matches #"\d{1,}" "0")
+
 (def days "Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday")
 
 (defn day-names [s]
@@ -18,6 +20,10 @@
   (let [matcher (re-matcher (re-pattern (str "(?<month>" month ")")) s)]
     (when (.matches matcher)
       {:month (.group matcher "month")})))
+
+(def anchor "$")
+(def regex (re-pattern (str "end of the line" anchor)))
+(re-matches regex "end of the line")
 
 (defn capture-day [s]
   (let [matcher (re-matcher (re-pattern (str "(?<day>" day ")")) s)]
@@ -65,3 +71,8 @@
 
 (def match-day-month-name-date
   (re-pattern (str "(?<dayname>" days "), (?<month>" months ") (?<day>" day "), (?<year>" year ")")))
+
+(re-matches #"[a-z][ADKZ][0-9][!?]" "jB5?")
+
+(def regex #"cat|bat")
+(re-matches regex "bat")
