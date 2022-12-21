@@ -19,7 +19,7 @@
 (defn clone-test-data
   "Clone the problem-specifications repo from github"
   []
-  (sh "git" "clone" "git@github.com:exercism/problem-specifications"))
+  (sh "git" "clone" "https://github.com/exercism/problem-specifications"))
 
 (defn load-test-data
   "Clones and loads the test data for the given exercise"
@@ -32,6 +32,10 @@
        (format "Could not find test data for %s (looking in %s)"
                exercise-name test-data-filename)))
     (json/parse-stream (reader test-data-filename))))
+
+(comment
+  (load-test-data "scale-generator")
+  )
 
 (defn munge-test-data
   "Loads the generator namespace for the exercise and calls the munge-data function on the given test-data."
@@ -49,6 +53,13 @@
         (println (format "Could not require %s due to an exception:\n\t%s" exercise-ns (.getMessage e)))
         (println (format "Skipping any munging of canonical-data for %s" exercise-name))
         test-data))))
+
+(comment
+  (let [exercise-name "scale-generator"
+        test-data (load-test-data "scale-generator")
+        exercise-ns (symbol (str exercise-name "-generator"))]
+    (munge-test-data exercise-name test-data))
+  )
 
 (defn generate-test-data
   "Munges the test-data and renders the test for the exercise using the test template."
@@ -70,3 +81,7 @@
         (println (format "Generated tests for %s exercise using template %s" exercise-name test-template-path)))
       (warn-and-exit (format "No exercise test template found at '%s'" test-template-path))))
   (shutdown-agents))
+
+(comment
+  (-main "scale-generator")
+  )
