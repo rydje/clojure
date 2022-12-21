@@ -1,0 +1,1 @@
+(ns scale-generator-generator)
