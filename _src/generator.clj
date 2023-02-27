@@ -2,7 +2,8 @@
   (:require [cheshire.core :as json]
             [clojure.java.shell :refer [sh]]
             [clojure.java.io :refer [reader]]
-            [stencil.core :as stencil])
+            [stencil.core :as stencil]
+            [clojure.string :as str])
   (:import (java.io File IOException)))
 
 (defn file-exists?
@@ -56,8 +57,7 @@
 
 (comment
   (let [exercise-name "scale-generator"
-        test-data (load-test-data "scale-generator")
-        exercise-ns (symbol (str exercise-name "-generator"))]
+        test-data (load-test-data "scale-generator")]
     (munge-test-data exercise-name test-data))
   )
 
@@ -67,8 +67,16 @@
   (let [munged-test-data (munge-test-data exercise-name test-data)
         template (slurp test-template-path)]
     (spit
-     (format "exercises/%s/test/%s_test.clj" exercise-name exercise-name)
+     (format "exercises/%s/test/%s_test.clj" exercise-name (str/replace exercise-name "-" "_"))
      (stencil/render-string template munged-test-data))))
+
+(comment
+  (let [exercise-name "scale-generator"
+        test-template-path (format "exercises/%s/.meta/tests.toml" exercise-name)
+        test-data (load-test-data "scale-generator")]
+   (get (munge-test-data exercise-name test-data)
+        "cases")
+    #_(generate-test-data exercise-name test-template-path test-data)))
 
 (defn -main
   "Uses the test template for the exercise and test data to generate test cases."
@@ -83,5 +91,6 @@
   (shutdown-agents))
 
 (comment
+  (file-exists? "exercises/scale-generator/.meta/tests.toml")
   (-main "scale-generator")
   )
