@@ -4,24 +4,25 @@
          '[babashka.fs :as fs]
          '[clojure.string :as str])
 
-(comment
-  (def slug "zipper"))
+(def slug "coordinate-transformation")
+
+(def url "https://raw.githubusercontent.com/exercism/problem-specifications/main/exercises/")
 
 (def data
   (let [url "https://raw.githubusercontent.com/exercism/problem-specifications/main/exercises/"]
-    {:canonical-data (json/parse-string (slurp (str url "/" slug "/canonical-data.json")) true)
-     :description (slurp (str url "/" slug "/description.md"))
-     :metadata (slurp (str url "/" slug "/metadata.toml"))}))
+    {:canonical-data (try (json/parse-string (slurp (str url "/" slug "/canonical-data.json")) true)
+                          (catch Exception e nil))
+     :description (try (slurp (str url "/" slug "/description.md"))
+                       (catch Exception e nil))
+     :metadata (try (slurp (str url "/" slug "/metadata.toml"))
+                    (catch Exception e nil))}))
 
-(second
- (str/split (:metadata data) #"="))
-
-(defn get-meta 
+(defn get-meta
   "Returns a vector containing the exercise title and blurb"
   [data]
   (mapv last
-       (map #(map str/trim (str/split % #"="))
-            (str/split-lines (:metadata data)))))
+        (map #(map str/trim (str/split % #"="))
+             (str/split-lines (:metadata data)))))
 
 (defn init-deps [data]
   (fs/create-dirs (fs/path "exercises" "practice"
@@ -122,19 +123,59 @@
   (let [slug (:exercise (:canonical-data data))]
     {:authors [author],
      :contributors [],
-     :files {:solution [(str "src/" (str/replace slug "-" "_") ".clj")], 
-             :test [(str "test/" (str/replace slug "-" "_") "_test.clj")], 
+     :files {:solution [(str "src/" (str/replace slug "-" "_") ".clj")],
+             :test [(str "test/" (str/replace slug "-" "_") "_test.clj")],
              :example [".meta/src/example.clj"]},
      :blurb blurb}))
 
 (defn init-config! [data]
   (let [path ["exercises" "practice" (:exercise (:canonical-data data)) ".meta"]]
     (when-not (fs/directory? (apply fs/path path))
-   (fs/create-dirs (apply fs/path (conj path "src")))
+      (fs/create-dirs (apply fs/path (conj path "src")))
       (spit (str (apply fs/file (conj path "config.json")))
             (json/generate-string (config data "porkostomus" (last (get-meta data)))
                                   {:pretty true})))))
 
 (comment
-  (init-config! data)
-  )
+  (init-config! data))
+
+;; exercise config.json for learning exercise
+
+(json/decode
+ "{
+  \"blurb\": \"Learn about numbers and conditionals by analyzing the production of an assembly line in a car factory\",
+  \"authors\": [
+    \"porkostomus\"
+  ],
+  \"forked_from\": [
+  \"fsharp/cars-assemble\"
+  ],
+  \"files\": {
+    \"solution\": [
+      \"src/cars_assemble.clj\"
+    ],
+    \"test\": [
+      \"test/cars_assemble_test.clj\"
+    ],
+    \"exemplar\": [
+      \".meta/exemplar.clj\"
+    ]
+  }
+}
+" true)
+
+(defn concept-exercise-config [slug blurb author forked-from]
+  (json/generate-string {:blurb blurb
+                         :authors [author],
+                         :forked_from [forked-from],
+                         :files {:solution [(str "src/" (str/replace slug "-" "_") ".clj")]
+                                 :test [(str "test/" (str/replace slug "-" "_") "_test.clj")]
+                                 :exemplar [".meta/exemplar.clj"]}}
+                        {:pretty true}))
+
+(comment
+  (spit "exercises/concept/coordinate-transformation/.meta/config.json"
+        (concept-exercise-config "coordinate-transformation"
+                                 "Practice your knowledge of closures by implementing various coordinate transformations."
+                                 "porkostomus"
+                                 "javascript/coordinate-transformation")))
