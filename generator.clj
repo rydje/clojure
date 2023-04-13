@@ -1,7 +1,14 @@
-(ns generator
-  (:require [cheshire.core :as json]
-            [babashka.fs :as fs]
-            [clojure.string :as str]))
+#!/usr/bin/env bb
+
+(require '[cheshire.core :as json]
+          '[babashka.fs :as fs]
+          '[clojure.string :as str])
+
+(defn fetch-data [slug]
+  (let [url "https://raw.githubusercontent.com/exercism/problem-specifications/main/exercises/"]
+    {:canonical-data (slurp (str url "/" slug "/canonical-data.json"))
+     :description (slurp (str url "/" slug "/description.md"))
+     :metadata (slurp (str url "/" slug "/metadata.toml"))}))
 
 (def data
   (json/parse-string (slurp "canonical_data.json") true))
@@ -77,3 +84,5 @@
         (apply str (interpose "\n\n"
                               (for [property (distinct (map :property (:cases data)))]
                                 (str "(defn " property " []\n  )")))))))
+
+(println "hello from babashka!")
