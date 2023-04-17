@@ -1,6 +1,6 @@
 # Instructions
 
-In this exercise you'll be writing code to process a list of programming languages you are planning to practice from Exercism platform.
+In this exercise you'll be writing code to keep track of what programming languages you want to learn on Exercism. The list just keeps on growing!
 
 You have six tasks.
 
