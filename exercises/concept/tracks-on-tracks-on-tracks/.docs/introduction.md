@@ -1,10 +1,8 @@
 # Introduction
 
-Lists in Clojure are ordered collections enclose in parentheses.
+Lists in Clojure are ordered collections enclosed in parentheses.
 
-Clojure lists can be created in one of two ways. The `list` function can create a list, or you can `quote` a literal list.
-
-If not quoted, Clojure would attempt to call the first element as a function:
+Clojure lists can be created with the `list` function, or you can `quote` a literal list. It needs to be quoted, otherwise Clojure would attempt to call the first element as a function:
 
 ```clojure
 (1 2 3)
