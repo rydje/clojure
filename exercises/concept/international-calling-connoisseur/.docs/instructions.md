@@ -17,61 +17,64 @@ countries
 
 ## 2. Add a country to a map
 
-Add "United Kingdom" with a dialing code of 44 to the map created in task 1:
+Add "United Kingdom" with a dialing code of 44 to the map created in task 1, and capture the result in a var called `map-with-uk`:
 
 ```clojure
-(add-country countries 44 "United Kingdom")
+map-with-uk
 ;;=> {1 "United States of America", 44 "United Kingdom", 55 "Brazil", 91 "India"}
 ```
 
 ## 3. Get the country name matching a country code
 
-Retrieve the name of the country with dialing code 55
+Retrieve the name of the country with dialing code 55, and store the result in a var named `country-55`:
 
 ```clojure
-(country-name countries 55)
+country-55
 ;;=> "Brazil"
 ```
 
 ## 4. Update a country name
 
-Change the name of "United States of America" to "Les États-Unis":
+Change the name of "United States of America" to "Les États-Unis", and store the result as a var named `us-fr`:
 
 ```clojure
-(update-map countries 1 "Les États-Unis")
+us-fr
 ;;=> {1 "Les États-Unis", 55 "Brazil", 91 "India"}
 ```
 
 ## 5. Check that a country exists in the map
 
-Check that a record for Brazil exists in the map created in task 1
+Check that a record for Brazil exists in the map created in task 1, and store the result as a var named `brazil-exists?`:
+
 
 ```clojure
-(code-exists? countries 55)
+brazil-exists?
 ;;=> true
 ```
 
-## 6. Attempt to update name of country that is not in the map
+## 6. Update name of country in the map
 
-Try to change the name of a country with a code that is not in the map e.g. 999. This should result in no change to the map:
+Write a function called `update-country` that will replace the country of a code in the map, but return the map unchanged if the code is not present.
 
 ```clojure
-(update-map countries 999, "Newlands")
-;;=> {1 "United States of America", 44 "United Kingdom", 55 "Brazil", 91 "India"}
+(update-country countries 1 "les États-Unis")
+;;=> {1 "les Ã‰tats-Unis", 55 "Brazil", 91 "India"}
+(update-country countries 999, "Newlands")
+;;=> {1 "United States of America", 55 "Brazil", 91 "India"}
 ```
 
 ## 7. Remove a country from the map
 
-Remove India from the map:
+Remove India from the map, and store the result as a var named `countries-without-india`:
 
 ```clojure
-(remove-country countries 91)
+countries-without-india
 ;;=> {1 "United States of America", 55 "Brazil"}
 ```
 
 ## 8. Find the country with the longest name
 
-Process the values in the map to find the one with the longest name:
+Write a function that will return the country with the longest name:
 
 ```clojure
 (longest-name countries)
