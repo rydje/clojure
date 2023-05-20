@@ -3,30 +3,25 @@
 (def countries
   {1 "United States of America", 55 "Brazil", 91 "India"})
 
-(defn add-country [m code name]
-  (assoc m code name))
+(def map-with-uk
+  (assoc countries 44 "United Kingdom"))
 
-(defn country-name [m code]
-  (get m code))
+(def country-55
+  (get countries 55))
+ 
+(def us-fr
+  (assoc countries 1 "les États-Unis"))
 
-(defn code-exists? [m code]
-  (if (get m code) true false))
+(def brazil-exists?
+  (contains? countries 55))
 
 (defn update-country [m code name]
-  (if (code-exists? m code)
+  (if (contains? m code)
     (assoc m code name)
     m))
 
-(defn remove-country [m code]
-  (dissoc m code))
+(def countries-without-india
+  (dissoc countries 91))
 
 (defn longest-name [m]
   (last (first (sort-by count m))))
-
-(comment
-  (get countries 1)
-  (add-country {} 44 "United Kingdom")
-  (code-exists? countries 999)
-  (last (first (sort-by count countries)))
-  (longest-name {})
-  )
