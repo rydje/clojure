@@ -8,12 +8,6 @@
 
 (def country-55
   (get countries 55))
- 
-(def us-fr
-  (assoc countries 1 "les États-Unis"))
-
-(def brazil-exists?
-  (contains? countries 55))
 
 (defn update-country [m code name]
   (if (contains? m code)
